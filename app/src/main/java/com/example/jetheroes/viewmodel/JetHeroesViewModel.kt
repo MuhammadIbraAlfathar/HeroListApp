@@ -28,6 +28,7 @@ class JetHeroesViewModel(private val repository: HeroRepository): ViewModel() {
     }
 }
 
+// class viewmodel factory
 class ViewModelFactory(private val repository: HeroRepository) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
