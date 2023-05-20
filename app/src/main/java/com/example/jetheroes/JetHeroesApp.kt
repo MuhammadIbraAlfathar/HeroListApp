@@ -11,10 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,20 +24,21 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.jetheroes.model.HeroesData
 import com.example.jetheroes.ui.theme.JetHeroesTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextAlign
+import com.example.jetheroes.viewmodel.JetHeroesViewModel
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jetheroes.repository.HeroRepository
+import com.example.jetheroes.viewmodel.ViewModelFactory
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun JetHeroesApp(
     modifier: Modifier = Modifier,
+    viewModel: JetHeroesViewModel = viewModel(factory = ViewModelFactory(HeroRepository()))
 ) {
 
-    val groupedHeroes = HeroesData.heroes
-        .sortedBy { it.name }
-        .groupBy { it.name[0] }
+    val groupedHeroes by viewModel.groupedHeroes.collectAsState()
 
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
